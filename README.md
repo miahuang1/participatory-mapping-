@@ -12,8 +12,8 @@ Allowing users to share their experiences and suggestions about schools in the S
 - Students who want to share their experiences at their shchool
 
 # Function
--Users can click to place a marker and write their suggestions in a pop-up box
--Users can hover over a marker to view what other users have written
+- Users can click to place a marker and write their suggestions in a pop-up box
+- Users can hover over a marker to view what other users have written
 
 # Acknowledgment
 
