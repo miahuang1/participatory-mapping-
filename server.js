@@ -10,4 +10,5 @@ app.listen(port, () => {
 });
 
 const cors = require('cors');
-app.use(cors());
+app.use(cors({
+  origin: 'https://my-map-0488ca0ccdcf.herokuapp.com'}));
