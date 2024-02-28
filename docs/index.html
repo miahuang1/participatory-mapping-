@@ -52,6 +52,12 @@
             margin-bottom: 10px;
         }
 
+        #email{
+            width: 100%;
+            height: 20px;
+            margin-bottom: 10px;
+        }
+
         #submit {
             float: right;
         }
@@ -68,7 +74,7 @@
         <h4>WenJing Huang | University of Washington </h4>
         <!-- Introduction to the participatory mapping solution -->
         <p>
-            Participatory mapping is about users can place points on the map giving reviews of their school that they have visited in the Seattle area. Users can click to place a marker and write their suggestions in a pop-up box and can hover over a marker to view what other users have written.
+            Participatory mapping is about users can place points on the map giving reviews of their school that they have visited in the Seattle area. Users can click to place a marker and write their suggestions in a pop-up box and can hover over a marker to view what other users have written. And the users can have an option to add their contact information such as like email. Then, click sumbit to add a dot at the map.
             To help you envision what this map can assist you, you can take a look at a few existing projects, such as <a href="https://hgis.uw.edu/lgbtqspaces/" target="_blank"><b>Shifting LGBTQ+ spaces</b></a>,
             <a href="https://hgis.uw.edu/chop"> <b>Archiving the CHOP</b></a> and <a href="https://www.queeringthemap.com/" target="_blank"><b>Queering the Map</b></a>.
          </p>
@@ -148,10 +154,11 @@
             var coordinates = e.features[0].geometry.coordinates;
             var content = e.features[0].properties.content;
             var contributor = e.features[0].properties.contributor;
+            var email = e.features[0].properties.email;
 
             popup = new maplibregl.Popup()
                 .setLngLat(coordinates)
-                .setHTML("<p><b>" + contributor + "</b> <i>said:</i> " + content + "</p>")
+                .setHTML("<p><b>" + contributor + "</b> <i>said:</i> " + content + "<br>" + "Contact: " + email + "</p>")
                 .addTo(map);
         });
 
@@ -168,7 +175,7 @@
             }
 
             // Create the HTML content for the contribution popup
-            const popupContent = '<div id="popup"><input type="text" id="name" placeholder="Input your name here..."><input type="text" id="content" placeholder="Input your message here..."><button id="submit">submit</button></div>';
+            const popupContent = '<div id="popup"><input type="text" id="name" placeholder="Input your name here..."><input type="text" id="content" placeholder="Input your message here..."><input type="text" id="email" placeholder="Optional: Include your email here"><button id="submit">submit</button></div>';
 
             // Create a new popup and set its content
             popup = new maplibregl.Popup({ closeOnClick: false })
@@ -185,12 +192,14 @@
         async function submitNewRecord() {
             let contributor = document.getElementById('name').value;
             let content = document.getElementById('content').value;
+            let email = document.getElementById('email').value;
             let lngLat = popup.getLngLat();
 
             // Create a new URLSearchParams object and append the data to it
             let newRecord = new URLSearchParams();
             newRecord.append('contributor', contributor);
             newRecord.append('content', content);
+            newRecord.append('email', email);
             newRecord.append('lng', lngLat.lng);
             newRecord.append('lat', lngLat.lat);
 
@@ -214,6 +223,7 @@
                     'properties': {
                         'contributor': contributor,
                         'content': content,
+                        'email': email,
                     },
                     'geometry': {
                         'type': 'Point',
