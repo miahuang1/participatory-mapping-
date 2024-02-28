@@ -120,10 +120,12 @@
                     'properties': {
                         'contributor': data.rows[i].contributor,
                         'content': data.rows[i].content,
+                        'email': data.rows[i].email,
                     },
                     'geometry': {
                         'type': 'Point',
                         'coordinates': [data.rows[i].lng, data.rows[i].lat]
+        
                     }
                 });
             }
