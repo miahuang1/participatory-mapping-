@@ -46,12 +46,14 @@
 
         /* Displays ? */
         summary::after {
+            display: inline-flex;
             font-family: "Material Icons";
             font-size: 80px;
             margin-left: auto;
             margin-right: auto;
+            vertical-align: middle;
             bottom: 20px;
-            content: "\eb8b"; 
+            content: "\e88e"; 
         }
 
         /* Changes box color to gray when mouse hovers over it */
@@ -93,7 +95,7 @@
 
         /* Displays X when Info Box opened */
         details[open] > summary::after {
-            content: "\e5cd";
+            content: "\e5c9";
         }
         /* --------------Info Box-------------- */
 
