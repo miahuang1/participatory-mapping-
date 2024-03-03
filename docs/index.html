@@ -40,7 +40,6 @@
         }
 
         /* Info Box */
-
         summary {
             display: block;
         }
@@ -48,14 +47,20 @@
         /* Displays ? */
         summary::after {
             font-family: "Material Icons";
-            font-size: 100px;
+            font-size: 80px;
             content: "\eb8b"; 
+        }
+
+        summary:hover {
+            background-color: #808080;
         }
         
         details > summary {
             position: absolute;
             padding: 4px;
             bottom: 10px;
+            width: 100px;
+            height: 100px;
             left: 10px;
             background-color: #ffffff;
             border-radius: 5px;
@@ -78,12 +83,11 @@
             z-index: 2;
         }
 
-        /* Displays X */
         details[open] > summary::after {
             content: "\e5cd";
         }
-        /* Info Box */
-        
+
+        /* User Input Panel */
         #popup {
             padding: 10px;
         }
