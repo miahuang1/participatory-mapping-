@@ -72,7 +72,7 @@
             padding: 20px;
         }
 
-        .side-panel-toggle {
+        #side-panel-toggle {
             width: 40px;
             height: 40px;
             flex-shrink: 0;
@@ -91,11 +91,11 @@
             background: #808080;
         }
 
-        .sp-icon-close {
+        #sp-icon-close {
             display: none !important;
         }
 
-        .side-panel {
+        #side-panel {
             /* display: none; */
             width: 200px;
             flex-shrink: 0;
@@ -104,7 +104,20 @@
             background: #ffffff;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.35);
         }
+
+        #side-panel-open #side-panel {
+          display: initial;
+        }
+        
+        #side-panel-open #sp-icon-open {
+          display: none !important;
+        }
+        
+        #side-panel-open #sp-icon-close {
+          display: initial !important;
+        }
         /* Side Panel Edit */
+    
     </style>
 </head>
 
@@ -286,6 +299,10 @@
                 map.getSource('places').setData(geojson);
             }
         }
+
+        document.querySelector(".side-panel-toggle").addEventListener("click", () => {
+          document.querySelector(".wrapper").classList.toggle("side-panel-open");
+        });
     </script>
 
 </body>
