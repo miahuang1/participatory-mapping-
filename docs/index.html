@@ -5,7 +5,7 @@
     <title>A Minimum Viable Participatory Mapping Project</title>
     <script src="https://unpkg.com/maplibre-gl@3.1.0/dist/maplibre-gl.js"></script>
     <link href="https://unpkg.com/maplibre-gl@3.1.0/dist/maplibre-gl.css" rel="stylesheet" />
-    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     
     <!-- Styles for the map and popup -->
     <style>
@@ -39,23 +39,29 @@
         }
 
         /* Info Box */
+        
         details > summary {
             position: absolute;
             padding: 4px;
             width: 200px;
-            top: 125px;
+            top: 135px;
             left: 10px;
             background-color: #ffffff;
             border-radius: 5px;
             box-shadow: 1px 1px 2px #bbbbbb;
             cursor: pointer;
-            font-family: Arial, Helvetica, sans-serif;
+            font-family: "Material Icons";
             z-index: 2;
+        }
+
+        /* Displays ? */
+        details > summary::before {
+            content: "\eb8b";
         }
 
         details > p {
             position: absolute;
-            top: 150px;
+            top: 160px;
             left: 10px;
             background-color: #ffffff;
             padding: 4px;
@@ -64,6 +70,11 @@
             box-shadow: 1px 1px 2px #bbbbbb;
             font-family: Arial, Helvetica, sans-serif;
             z-index: 2;
+        }
+
+        /* Displays X */
+        details[open] > summary::after {
+            content: "\e5cd";
         }
         /* Info Box */
         
