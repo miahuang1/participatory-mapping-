@@ -5,10 +5,6 @@
     <title>A Minimum Viable Participatory Mapping Project</title>
     <script src="https://unpkg.com/maplibre-gl@3.1.0/dist/maplibre-gl.js"></script>
     <link href="https://unpkg.com/maplibre-gl@3.1.0/dist/maplibre-gl.css" rel="stylesheet" />
-
-    <!-- Side Panel Edit -->
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
-    <!-- Side Panel Edit -->
     
     <!-- Styles for the map and popup -->
     <style>
@@ -62,59 +58,16 @@
         }
 
         /* Side Panel Edit */
-        .wrapper {
-            display: flex;
-            height: 100vh;
-        }
-
-        .main {
-            flex-grow: 1;
-            padding: 20px;
-        }
-
-        .side-panel-toggle {
-            width: 40px;
-            height: 40px;
-            flex-shrink: 0;
-            display: grid;
-            place-items: center;
-
-            color: #ffffff;
-            background: #ffffff;
-            border: none;
-            border-radius: 5px 0 0 5px;
-            outline: none;
-            cursor: pointer;
-        }
-
-        .side-panel-toggle:hover {
-            background: #808080;
-        }
-
-        .sp-icon-close {
-            display: none !important;
-        }
-
-        .side-panel {
-            /* display: none; */
-            width: 200px;
-            flex-shrink: 0;
-            padding: 20px;
-            color: #ffffff;
-            background: #ffffff;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.35);
-        }
-
-        .side-panel-open .side-panel {
-          display: initial;
+        form {
+          width: 50%;
         }
         
-        .side-panel-open .sp-icon-open {
-          display: none !important;
+        .hide {
+          display: none;
         }
         
-        .side-panel-open .sp-icon-close {
-          display: initial !important;
+        .show {
+          display: block;
         }
         /* Side Panel Edit */
     
@@ -126,19 +79,9 @@
     <div id="map"></div>
 
     <!-- Side Panel Edit -->
-    <div class="wrapper side-panel-open">
-        <!-- Project information text -->
-        <div class="main">
-            Side Panel Information (Extra project information)
-        </div>
-        <!-- ? when unopened, X when opened -->
-        <button class="side-panel-toggle" type="button">  
-            <span class="material-symbols-outlined sp-icon-open">question_mark</span>
-            <span class="material-symbols-outlined sp-icon-close">close</span>
-        </button>
-        <div class="side-panel">
-            Side Panel Information
-        </div>
+    <button id="theButton" onclick="clickMe()">More Info</button>
+    <div id="popupPanel" class="hide">
+        sdfgsdfgsdf
     </div>
     
     <!-- Information box -->
@@ -159,6 +102,13 @@
     <script>
         // Variable to hold the popup instance
         let popup = null;
+
+        // Side panel info
+        function clickMe() {
+          var text = document.getElementById("popupPanel");
+          text.classList.toggle("hide");
+          text.classList.toggle("show");
+        }
         
         // GeoJSON data object to store the contributed points
         let geojson = {
@@ -299,10 +249,6 @@
                 map.getSource('places').setData(geojson);
             }
         }
-
-        document.querySelector(".side-panel-toggle").addEventListener("click", () => {
-          document.querySelector(".wrapper").classList.toggle("side-panel-open");
-        });
     </script>
 
 </body>
