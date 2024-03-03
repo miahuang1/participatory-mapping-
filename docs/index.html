@@ -58,69 +58,6 @@
             box-shadow: 1px 1px 2px #bbbbbb;
             z-index: 2;
         }
-        
-        .wrapper {
-          display: flex;
-          height: 100vh;
-        }
-        
-        .main {
-          flex-grow: 1;
-          padding: 20px;
-          overflow-y: auto;
-          z-index: 2;
-        }
-        
-        .side-panel-toggle {
-          width: 40px;
-          height: 40px;
-          flex-shrink: 0;
-          display: grid;
-          place-items: center;
-        
-          color: #ffffff;
-          background: #009578;
-          border: none;
-          border-radius: 5px 0 0 5px;
-          outline: none;
-          cursor: pointer;
-          z-index: 2;
-        }
-        
-        .side-panel-toggle:hover {
-          background: #007960;
-        }
-        
-        .sp-icon-close {
-          display: none !important;
-        }
-        
-        .side-panel {
-          display: none;
-          width: 200px;
-          flex-shrink: 0;
-          padding: 20px;
-          color: #ffffff;
-          background: #009578;
-          box-shadow: 0 0 10px rgba(0, 0, 0, 0.35);
-          z-index: 2;
-        }
-        
-        .side-panel-open .side-panel {
-          display: initial;
-          z-index: 2;
-        }
-        
-        .side-panel-open .sp-icon-open {
-          display: none !important;
-          z-index: 2;
-        }
-        
-        .side-panel-open .sp-icon-close {
-          display: initial !important;
-          z-index: 2;
-        }
-
         /* Info Box */
         
         #popup {
@@ -157,18 +94,6 @@
     </details>
     
     <!-- Information box -->
-    <div id="info">
-        <h3>Small Business Participatory Mapping Project</h3>
-        <h4>Group AA5 | University of Washington </h4>
-        <!-- Introduction to the participatory mapping solution -->
-        <p>
-            This map is a minimum viable solution to participatory mapping.
-            Users can contribute their local knowledge by clicking on the map,
-            submitting their information, and viewing it represented as a red dot.
-            Existing contributions can also be viewed as red dots. 
-            <i>Last update: March 3, 2024</i>
-        </p> 
-    </div>
     
     <!-- JavaScript code for the interactive map and data submission -->
     <script>
@@ -325,10 +250,6 @@
                 map.getSource('places').setData(geojson);
             }
         }
-
-        document.querySelector(".side-panel-toggle").addEventListener("click", () => {
-          document.querySelector(".wrapper").classList.toggle("side-panel-open");
-        });
     </script>
 
 </body>
