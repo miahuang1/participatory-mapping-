@@ -6,7 +6,7 @@
     <script src="https://unpkg.com/maplibre-gl@3.1.0/dist/maplibre-gl.js"></script>
     <link href="https://unpkg.com/maplibre-gl@3.1.0/dist/maplibre-gl.css" rel="stylesheet" />
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
-    
+
     <!-- Styles for the map and popup -->
     <style>
         /* Basic CSS for the page */
@@ -21,7 +21,7 @@
             bottom: 0;
             width: 100%;
         }
-        
+
         #info {
             position: absolute;
             top: 0;
@@ -51,7 +51,7 @@
             font-size: 80px;
             align-items: center;
             justify-content: center;
-            content: "\e88e"; 
+            content: "\e88e";
         }
 
         /* Changes box color to gray when mouse hovers over it */
@@ -61,7 +61,7 @@
         }
 
         /* Initializes the Info Box Button */
-        details > summary {
+        details>summary {
             position: absolute;
             padding: 4px;
             bottom: 10px;
@@ -77,7 +77,7 @@
         }
 
         /* Initializes the Info Box */
-        details > p {
+        details>p {
             position: absolute;
             bottom: 115px;
             left: 10px;
@@ -97,26 +97,25 @@
         }
 
         @keyframes grow {
-          from {
-            height: 0px;
-            width: 0px;
-            overflow: hidden;
-            color: rgba(0, 0, 0, 0);
-          }
-        
-          to {
-            height: 300px;
-            width: 350px;
-            overflow: hidden;
-            color: rgba(0, 0, 0, 1);
-          }
+            from {
+                height: 0px;
+                width: 0px;
+                overflow: hidden;
+                color: rgba(0, 0, 0, 0);
+            }
+
+            to {
+                height: 300px;
+                width: 350px;
+                overflow: hidden;
+                color: rgba(0, 0, 0, 1);
+            }
         }
 
         /* Displays X when Info Box opened */
-        details[open] > summary::after {
+        details[open]>summary::after {
             content: "\e5c9";
         }
-        /* --------------Info Box-------------- */
 
         /* User Input Panel */
         #popup {
@@ -138,7 +137,79 @@
         #submit {
             float: right;
         }
-    
+
+        /* Styles for the comment button and overlay */
+        .overlay-trigger--add {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            z-index: 1;
+            background-color: #fff;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;
+            padding: 4px;
+            /* Adjust the padding */
+            height: 30px;
+            /* Adjust the height */
+        }
+
+        .add-comment-icon {
+            width: 16px;
+            /* Adjust the size of the icon */
+            height: 16px;
+            /* Adjust the size of the icon */
+        }
+
+        #overlay {
+            position: fixed;
+            display: none;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 2;
+            justify-content: center;
+            align-items: center;
+        }
+
+        #overlayContent {
+            background: #fff;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .close-button {
+            cursor: pointer;
+            float: right;
+            border: none;
+            background-color: transparent;
+            font-size: 1rem;
+            /* Adjust the font size */
+            margin-top: -4px;
+            /* Adjust the margin to center the icon vertically */
+        }
+
+        #fields input[type="text"] {
+            width: calc(100% - 20px);
+            padding: 10px;
+            margin: 5px 0;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
+
+        #share {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
     </style>
 </head>
 
@@ -160,37 +231,60 @@
             Map text <br>
             Map text <br>
             <br><br>
-            
+
             Special thanks to Bo Zhao for the frameworks of this<br>
             website. A tutorial on how you can make a similar can<br>
-            be found at this website: <a href="https://www.github.com/jakobzhao/participatory-mapping" target="_blank">Participatory Mapping</a>.<br><br>
-            
+            be found at this website: <a href="https://www.github.com/jakobzhao/participatory-mapping"
+                target="_blank">Participatory Mapping</a>.<br><br>
+
             <i>Zhao, Bo</i>, 2023, "Crafting Your Own Participatory<br>
             Mapping Project: A Guide",<br>
             https://doi.org/10.7910/DVN/VSND2H,<br>
             <i>Harvard Dataverse</i>, V1<br><br>
-            
+
             <i>Last update: March 3, 2024</i>
         </p>
     </details>
-    
+
     <!-- Information box -->
     <div id="info">
         <h2>Small Business Participatory Mapping</h2>
-        <h4>Group AA5 | University of Washington </h4> 
+        <h4>Group AA5 | University of Washington </h4>
     </div>
-    
+
+    <!-- Add comment button -->
+    <button class="overlay-trigger overlay-trigger--add" id="add" aria-label="open add overlay"
+        onclick="showOverlay()">
+        <img class="add-comment-icon" src="/img/plus.png" alt="add">
+    </button>
+
+    <!-- Add comment overlay fields -->
+    <div id="overlay">
+        <div id="overlayContent">
+            <button class="close-button" onclick="hideOverlay()">X</button>
+            <h2>How to contribute to the map</h2>
+            <p>1. Click on the location of your experience.</p>
+            <p>2. Share your experience and thoughts in the text box below.</p>
+            <p>3. Click the ‘Share’ button.</p>
+            <div id="fields">
+                <input type="text" id="name" placeholder="Input your name here...">
+                <input type="text" id="content" placeholder="Input your message here...">
+                <button id="share" onclick="submitNewRecord()">Share</button>
+            </div>
+        </div>
+    </div>
+
     <!-- JavaScript code for the interactive map and data submission -->
     <script>
         // Variable to hold the popup instance
         let popup = null;
-        
+
         // GeoJSON data object to store the contributed points
         let geojson = {
             'type': 'FeatureCollection',
             'features': []
         };
-        
+
         // Create a new map instance
         let map = new maplibregl.Map({
             container: 'map', // container id
@@ -207,7 +301,7 @@
             });
 
             let data = await response.json();
-      
+
             // Iterate through the fetched records and add them to the GeoJSON data object
             for (let i = 0; i < data.rows.length; i++) {
                 geojson.features.push({
@@ -322,7 +416,18 @@
                     }
                 });
                 map.getSource('places').setData(geojson);
+
+                // Close the overlay after submitting the record
+                hideOverlay();
             }
+        }
+
+        function showOverlay() {
+            document.getElementById('overlay').style.display = 'flex';
+        }
+
+        function hideOverlay() {
+            document.getElementById('overlay').style.display = 'none';
         }
     </script>
 
