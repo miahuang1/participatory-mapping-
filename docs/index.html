@@ -201,7 +201,7 @@
             border: 1px solid #ccc;
         }
 
-        #share {
+        #share 
             display: inline-block;
             padding: 10px 20px;
             background-color: #007bff;
@@ -215,7 +215,14 @@
         .add-comment-icon {
             width: 25px;
             height: 25px;
-    }
+        }
+
+        .comment-image {
+            max-width: 100%;
+            height: auto;
+            display: block;
+            margin: 10px 0;
+        }
 
     </style>
 </head>
@@ -274,9 +281,10 @@
             <div id="fields">
                 <input type="text" id="name" placeholder="Input your name here...">
                 <input type="text" id="content" placeholder="Input your message here...">
-                <input type="file" id="image" name="image">
+                <input type="file" id="image" name="image" accept="image/*" onchange="previewImage(event)">
                 <button id="share" onclick="submitNewRecord()">Share</button>
             </div>
+            <img id="image-preview" src="#" alt="Image Preview" style="display:none;">
         </div>
     </div>
 
@@ -354,7 +362,7 @@
 
             popup = new maplibregl.Popup()
                 .setLngLat(coordinates)
-                .setHTML("<p><b>" + contributor + "</b> <i>said:</i> " + content + image + "</p>")
+                .setHTML("<p><b>" + contributor + "</b> <i>said:</i> " + content + "<br><img src='" + image + "' class='comment-image'></p>")
                 .addTo(map);
         });
 
@@ -368,78 +376,79 @@
         let tempMarker = null; // Variable to hold the temporary marker
 
         // Modify the map click event
-        map.on('click', function(e) {
-        // Remove existing temporary marker
-        if (tempMarker) {
-            tempMarker.remove();
-        }
+        map.on('click', function (e) {
+            // Remove existing temporary marker
+            if (tempMarker) {
+                tempMarker.remove();
+            }
 
-        // Add a new temporary marker at the clicked location
-        tempMarker = new maplibregl.Marker()
-            .setLngLat(e.lngLat)
-            .addTo(map);
-    });
+            // Add a new temporary marker at the clicked location
+            tempMarker = new maplibregl.Marker()
+                .setLngLat(e.lngLat)
+                .addTo(map);
+        });
 
-    // Show overlay when 'Share' button is clicked
-    document.getElementById('add').addEventListener('click', function() {
-        if (tempMarker) {
-            showOverlay();
-        }
-    });
+        // Show overlay when 'Share' button is clicked
+        document.getElementById('add').addEventListener('click', function () {
+            if (tempMarker) {
+                showOverlay();
+            }
+        });
 
         // Function to handle the submission of a new record
         async function submitNewRecord() {
-    let contributor = document.getElementById('name').value;
-    let content = document.getElementById('content').value;
-    let image = document.getElementById('image').value;
+            let contributor = document.getElementById('name').value;
+            let content = document.getElementById('content').value;
+            let imageInput = document.getElementById('image');
+            let image = imageInput.files[0];
 
-    // Check if temporary marker is available
-    if (!tempMarker) return;
-    let lngLat = tempMarker.getLngLat();
+            // Check if temporary marker is available
+            if (!tempMarker) return;
+            let lngLat = tempMarker.getLngLat();
 
-    // Initialize newRecord
-    let newRecord = new URLSearchParams();
-    newRecord.append('contributor', contributor);
-    newRecord.append('content', content);
-    newRecord.append('image', image);
-    newRecord.append('lng', lngLat.lng);
-    newRecord.append('lat', lngLat.lat);
+            // Initialize formData
+            let formData = new FormData();
+            formData.append('contributor', contributor);
+            formData.append('content', content);
+            formData.append('image', image);
+            formData.append('lng', lngLat.lng);
+            formData.append('lat', lngLat.lat);
 
-    // Set the POST request settings
-    let settings = {
-        method: 'POST',
-        body: newRecord
-    }
-
-    try {
-        // Send the POST request to add the new record
-        await fetch('https://participatory-mapping-project-5eb27b07b1d4.herokuapp.com/api/add-record', settings);
-    } catch (err) {
-        // Handle any errors that occur during the request
-        console.error(err);
-    } finally {
-        // Update the GeoJSON data with the new point
-        geojson.features.push({
-            'type': 'Feature',
-            'properties': {
-                'contributor': contributor,
-                'content': content,
-                'image': image,
-            },
-            'geometry': {
-                'type': 'Point',
-                'coordinates': [lngLat.lng, lngLat.lat]
+            // Set the POST request settings
+            let settings = {
+                method: 'POST',
+                body: formData
             }
-        });
-        map.getSource('places').setData(geojson);
 
-        // Close the overlay after submitting the record
-        hideOverlay();
-        // Remove temporary marker after submission
-        tempMarker.remove();
-        tempMarker = null;
-    }
-}
+            try {
+                // Send the POST request to add the new record
+                await fetch('https://participatory-mapping-project-5eb27b07b1d4.herokuapp.com/api/add-record', settings);
+            } catch (err) {
+                // Handle any errors that occur during the request
+                console.error(err);
+            } finally {
+                // Update the GeoJSON data with the new point
+                geojson.features.push({
+                    'type': 'Feature',
+                    'properties': {
+                        'contributor': contributor,
+                        'content': content,
+                        'image': URL.createObjectURL(image),
+                    },
+                    'geometry': {
+                        'type': 'Point',
+                        'coordinates': [lngLat.lng, lngLat.lat]
+                    }
+                });
+                map.getSource('places').setData(geojson);
+
+                // Close the overlay after submitting the record
+                hideOverlay();
+                // Remove temporary marker after submission
+                tempMarker.remove();
+                tempMarker = null;
+            }
+        }
 
         function showOverlay() {
             document.getElementById('overlay').style.display = 'flex';
@@ -447,6 +456,17 @@
 
         function hideOverlay() {
             document.getElementById('overlay').style.display = 'none';
+        }
+
+        // Preview image before uploading
+        function previewImage(event) {
+            var reader = new FileReader();
+            reader.onload = function () {
+                var output = document.getElementById('image-preview');
+                output.src = reader.result;
+                output.style.display = 'block';
+            }
+            reader.readAsDataURL(event.target.files[0]);
         }
     </script>
 
