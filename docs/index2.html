@@ -363,70 +363,78 @@
         });
 
         // Handle click event on the map to allow user contribution
-        map.on('click', function (e) {
-            if (popup) {
-                popup.remove();
-            }
+        let tempMarker = null; // Variable to hold the temporary marker
 
-            // Create the HTML content for the contribution popup
-            const popupContent = '<div id="popup"><input type="text" id="name" placeholder="Input your name here..."><input type="text" id="content" placeholder="Input your message here..."><button id="submit">submit</button></div>';
+        // Modify the map click event
+        map.on('click', function(e) {
+        // Remove existing temporary marker
+        if (tempMarker) {
+            tempMarker.remove();
+        }
 
-            // Create a new popup and set its content
-            popup = new maplibregl.Popup({ closeOnClick: false })
-                .setLngLat(e.lngLat)
-                .setHTML(popupContent)
-                .addTo(map);
+        // Add a new temporary marker at the clicked location
+        tempMarker = new maplibregl.Marker()
+            .setLngLat(e.lngLat)
+            .addTo(map);
+    });
 
-            // Attach an event listener to the submit button to handle new record submission
-            document.getElementById('submit').addEventListener('click', submitNewRecord);
-            e.preventDefault();
-        });
+    // Show overlay when 'Share' button is clicked
+    document.getElementById('add').addEventListener('click', function() {
+        if (tempMarker) {
+            showOverlay();
+        }
+    });
 
         // Function to handle the submission of a new record
         async function submitNewRecord() {
-            let contributor = document.getElementById('name').value;
-            let content = document.getElementById('content').value;
-            let lngLat = popup.getLngLat();
+    let contributor = document.getElementById('name').value;
+    let content = document.getElementById('content').value;
 
-            // Create a new URLSearchParams object and append the data to it
-            let newRecord = new URLSearchParams();
-            newRecord.append('contributor', contributor);
-            newRecord.append('content', content);
-            newRecord.append('lng', lngLat.lng);
-            newRecord.append('lat', lngLat.lat);
+    // Check if temporary marker is available
+    if (!tempMarker) return;
+    let lngLat = tempMarker.getLngLat();
 
-            // Set the POST request settings
-            let settings = {
-                method: 'POST',
-                body: newRecord
+    // Initialize newRecord
+    let newRecord = new URLSearchParams();
+    newRecord.append('contributor', contributor);
+    newRecord.append('content', content);
+    newRecord.append('lng', lngLat.lng);
+    newRecord.append('lat', lngLat.lat);
+
+    // Set the POST request settings
+    let settings = {
+        method: 'POST',
+        body: newRecord
+    }
+
+    try {
+        // Send the POST request to add the new record
+        await fetch('https://participatory-mapping-project-5eb27b07b1d4.herokuapp.com/api/add-record', settings);
+    } catch (err) {
+        // Handle any errors that occur during the request
+        console.error(err);
+    } finally {
+        // Update the GeoJSON data with the new point
+        geojson.features.push({
+            'type': 'Feature',
+            'properties': {
+                'contributor': contributor,
+                'content': content,
+            },
+            'geometry': {
+                'type': 'Point',
+                'coordinates': [lngLat.lng, lngLat.lat]
             }
+        });
+        map.getSource('places').setData(geojson);
 
-            try {
-                // Send the POST request to add the new record
-                await fetch('https://participatory-mapping-project-5eb27b07b1d4.herokuapp.com/api/add-record', settings);
-            } catch (err) {
-                // Handle any errors that occur during the request
-                console.error(err);
-            } finally {
-                // Remove the popup and update the GeoJSON data with the new point
-                popup.remove();
-                geojson.features.push({
-                    'type': 'Feature',
-                    'properties': {
-                        'contributor': contributor,
-                        'content': content,
-                    },
-                    'geometry': {
-                        'type': 'Point',
-                        'coordinates': [lngLat.lng, lngLat.lat]
-                    }
-                });
-                map.getSource('places').setData(geojson);
-
-                // Close the overlay after submitting the record
-                hideOverlay();
-            }
-        }
+        // Close the overlay after submitting the record
+        hideOverlay();
+        // Remove temporary marker after submission
+        tempMarker.remove();
+        tempMarker = null;
+    }
+}
 
         function showOverlay() {
             document.getElementById('overlay').style.display = 'flex';
