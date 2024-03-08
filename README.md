@@ -9,7 +9,7 @@ URL to visit [Small Business Participatory Map](https://kdubkdub.github.io/parti
 
 
 # Project description 
-- Users can place points on the map giving reviews of their favorite smaller businesses that they have visited in the Seattle area. Possibly add a filter to sort businesses based on business type (e.g., restaurants, bookstores, art galleries)  for a more user-friendly application.
+- Users can place points on the map giving reviews of their favorite smaller businesses that they have visited in the Seattle area.
 - Possibly include images in their reviews like how Yelp formats their user suggestions but on a map instead
 - Gives small businesses a higher chance to be selected because of the Top-Down view of the map, with no big signs drawing people to large businesses.
 
