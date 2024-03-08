@@ -11,4 +11,4 @@ app.listen(port, () => {
 
 const cors = require('cors');
 app.use(cors({
-  origin: 'https://participatory-mapping-project-5eb27b07b1d4.herokuapp.com/'}));
+  origin: 'https://participatory-mapping-project-5eb27b07b1d4.herokuapp.com'}));
