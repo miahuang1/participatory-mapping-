@@ -52,6 +52,7 @@
             align-items: center;
             justify-content: center;
             content: "\e88e";
+            height: 100%; /* Adjust to fill the height of the parent */
         }
 
         /* Changes box color to gray when mouse hovers over it */
@@ -149,10 +150,11 @@
             border: none;
             cursor: pointer;
             border-radius: 5px;
-            padding: 4px;
-            /* Adjust the padding */
-            height: 30px;
-            /* Adjust the height */
+            .overlay-trigger--add {
+            width: 80px;
+            height: 80px;
+            padding: 10px;
+            }
         }
 
         .add-comment-icon {
@@ -213,8 +215,8 @@
         }
 
         .add-comment-icon {
-            width: 25px;
-            height: 25px;
+            width: 60px;
+            height: 60px;
         }
 
         .comment-image {
