@@ -400,23 +400,23 @@
             let content = document.getElementById('content').value;
             let imageInput = document.getElementById('image');
             let image = imageInput.files[0];
-
+            
             // Check if temporary marker is available
             if (!tempMarker) return;
             let lngLat = tempMarker.getLngLat();
 
-            // Initialize formData
-            let formData = new FormData();
-            formData.append('contributor', contributor);
-            formData.append('content', content);
-            formData.append('image', image);
-            formData.append('lng', lngLat.lng);
-            formData.append('lat', lngLat.lat);
+            // Create a new FormData object and append the data to it
+            let newRecord = new FormData();
+            newRecord.append('contributor', contributor);
+            newRecord.append('content', content);
+            newRecord.append('image', image);
+            newRecord.append('lng', lngLat.lng);
+            newRecord.append('lat', lngLat.lat);
 
             // Set the POST request settings
             let settings = {
                 method: 'POST',
-                body: formData
+                body: newRecord
             }
 
             try {
