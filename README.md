@@ -3,6 +3,7 @@
 Group AA5 | Department of Geography |  University of Washington
 
 # URL to Visit the Project:
+The url to webmap [Giving Comment about School](https://my-map-0488ca0ccdcf.herokuapp.com/)
 
 # Project description 
 - Users can place points on the map giving reviews of their favorite smaller businesses that they have visited in the Seattle area. Possibly add a filter to sort businesses based on business type (e.g., restaurants, bookstores, art galleries)  for a more user-friendly application.
