@@ -5,12 +5,20 @@ Group AA5 | Department of Geography |  University of Washington
 # URL to Visit the Project:
 The url to webmap [Small Business Participatory Map](https://participatory-mapping-project-5eb27b07b1d4.herokuapp.com/)
 
+URL to visit [Small Business Participatory Map](https://kdubkdub.github.io/participatory-mapping/)
+
+
 # Project description 
 - Users can place points on the map giving reviews of their favorite smaller businesses that they have visited in the Seattle area. Possibly add a filter to sort businesses based on business type (e.g., restaurants, bookstores, art galleries)  for a more user-friendly application.
 - Possibly include images in their reviews like how Yelp formats their user suggestions but on a map instead
 - Gives small businesses a higher chance to be selected because of the Top-Down view of the map, with no big signs drawing people to large businesses.
 
 # Project Goal
+- Support for Small Businesses: Highlighting the importance and value of smaller businesses within the community by providing them with a platform for visibility and user feedback.
+
+- Community Engagement: Encouraging active participation and engagement from users in sharing their experiences and recommendations, fostering a sense of community around local businesses.
+
+- Promotion of Diversity: Emphasizing the diversity and uniqueness of smaller businesses by offering a variety of business types and allowing users to explore and discover new places.
 
 # Project significance and broader impacts
 - Benefit: Supporting Local Economies by raising small businesses' profile and drawing in additional clients thus the project can have a big positive impact on them. Consequently, this can support the regional economy, generate employment opportunities, and foster community growth. We also believe that this project will help emphasize how we support our local businesses while at the same time preserving the unique cultural identity of the developing city.
