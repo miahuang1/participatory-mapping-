@@ -338,6 +338,23 @@
             }
         });
 
+        map.on('mouseenter', 'placesLayer', function (e) {
+    map.getCanvas().style.cursor = 'pointer';
+
+    var coordinates = e.features[0].geometry.coordinates;
+    var content = e.features[0].properties.content;
+    var contributor = e.features[0].properties.contributor;
+    var image = e.features[0].properties.image;
+
+    // Check if the image URL is valid and create an <img> tag, otherwise don't include the image
+    var imageTag = image ? "<br><img src='" + image + "' class='comment-image' style='max-width:100%;height:auto;'>" : "";
+
+    popup = new maplibregl.Popup()
+        .setLngLat(coordinates)
+        .setHTML("<p><b>" + contributor + "</b> <i>said:</i> " + content + imageTag + "</p>")
+        .addTo(map);
+});
+
         // After the map loads, add the GeoJSON source and layer for existing points
         map.on("load", function () {
             map.addSource('places', {
